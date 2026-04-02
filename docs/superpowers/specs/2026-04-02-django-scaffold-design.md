@@ -201,6 +201,7 @@ Mirrors `.gitignore` plus: `.git/`, `docs/`, `.github/`, `.pre-commit-config.yam
 - **Dev dependencies** (uv group): `ruff`, `pre-commit`, `django-extensions`, `Werkzeug`, `pyOpenSSL`, `django-debug-toolbar`
 - **Ruff config**: line-length 88, target Python 3.12, isort-compatible import sorting
 - **Commitizen config**: version in `pyproject.toml` and `__version__.py`
+- **No requirements.txt files**: all dependency metadata lives exclusively in `pyproject.toml` with `uv.lock`. All commands run via `uv` (e.g. `uv sync`, `uv run`). The Dockerfile uses `uv` to install deps.
 
 ### .pre-commit-config.yaml
 
