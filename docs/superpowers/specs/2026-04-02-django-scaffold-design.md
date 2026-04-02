@@ -155,6 +155,24 @@ TRAEFIK_PORT=8080
 TRAEFIK_PROTOCOL=http
 ```
 
+A `.env` file (not committed) is generated during implementation with working local defaults (a random secret key, `todo`/`todo` for Postgres, etc.).
+
+## Ignore Files
+
+### .gitignore
+
+Standard Python/Django ignores plus:
+- `.env` (secrets)
+- `.claude/` (Claude Code session data)
+- `.idea/` (JetBrains IDE)
+- `traefik/certs/` (generated self-signed certs)
+- `staticfiles/` (collectstatic output)
+- `__pycache__/`, `*.pyc`, `.venv/`, `db.sqlite3`, `*.egg-info/`, `dist/`, `.ruff_cache/`
+
+### .dockerignore
+
+Mirrors `.gitignore` plus: `.git/`, `docs/`, `.github/`, `.pre-commit-config.yaml`, `*.md` (except requirements), `.venv/`
+
 ## CI/CD
 
 ### ci.yml — runs on all branches and PRs to main
