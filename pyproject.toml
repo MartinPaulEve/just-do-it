@@ -1,5 +1,48 @@
 [project]
 name = "todo"
-version = "0.1.0"
-requires-python = ">=3.11"
-dependencies = []
+version = "1.0.0"
+description = "Todo application"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.2",
+    "channels>=4.0",
+    "channels-redis>=4.0",
+    "daphne>=4.0",
+    "psycopg[binary]>=3.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11",
+    "pre-commit>=4.0",
+    "django-extensions>=3.2",
+    "werkzeug>=3.0",
+    "pyopenssl>=24.0",
+    "django-debug-toolbar>=5.0",
+]
+
+[tool.commitizen]
+version = "1.0.0"
+version_files = [
+    "__version__.py",
+    "pyproject.toml:version"
+]
+update_changelog_on_bump = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["todo", "config"]
