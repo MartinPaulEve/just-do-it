@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+*.egg
+
+# Virtual environments
+.venv/
+
+# Django
+db.sqlite3
+staticfiles/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Claude Code
+.claude/
+
+# Environment
+.env
+
+# Ruff
+.ruff_cache/
+
+# Traefik generated certs
+traefik/certs/
+
+# OS
+.DS_Store
+Thumbs.db
