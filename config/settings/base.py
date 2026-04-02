@@ -71,9 +71,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [
-                os.environ.get("CHANNELS_REDIS_URL", "redis://valkey:6379/1")
-            ],
+            "hosts": [os.environ.get("CHANNELS_REDIS_URL", "redis://valkey:6379/1")],
         },
     },
 }
