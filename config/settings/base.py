@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "channels",
     "django_extensions",
+    "tasks",
 ]
 
 MIDDLEWARE = [
