@@ -38,7 +38,12 @@ COPY . .
 ENV DJANGO_ENV=production
 ENV DJANGO_SETTINGS_MODULE=config.settings
 
-RUN uv run python manage.py collectstatic --noinput || true
+ARG SECRET_KEY=build-only-key
+RUN SECRET_KEY=${SECRET_KEY} \
+    ALLOWED_HOSTS=localhost \
+    CSRF_TRUSTED_ORIGINS=https://localhost \
+    POSTGRES_HOST=localhost \
+    uv run python manage.py collectstatic --noinput
 
 ENTRYPOINT ["/app/compose/entrypoint.sh"]
 CMD ["uv", "run", "daphne", "-b", "0.0.0.0", "-p", "8000", "todo.asgi:application"]
