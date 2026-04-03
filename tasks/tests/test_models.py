@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 
-from tasks.models import Task, TaskAttachment, TaskLink, TaskList
+from tasks.models import RecurrenceSeries, Task, TaskAttachment, TaskLink, TaskList
 
 
 class TaskListModelTest(TestCase):
@@ -152,6 +152,97 @@ class TaskModelTest(TestCase):
         Task.objects.create(title="First", task_list=self.task_list, position=0)
         titles = list(Task.objects.values_list("title", flat=True))
         self.assertEqual(titles, ["First", "Second"])
+
+
+class RecurrenceSeriesModelTest(TestCase):
+    def setUp(self):
+        self.task_list = TaskList.objects.create(
+            name="Work", colour="#4f46e5", position=0, column=0
+        )
+
+    def test_str_representation(self):
+        series = RecurrenceSeries(
+            title="Standup",
+            task_list=self.task_list,
+            recurrence_type="daily",
+            interval=1,
+            start_date=date.today(),
+            generation_horizon=date.today(),
+        )
+        self.assertIn("Standup", str(series))
+        self.assertIn("Daily", str(series))
+
+    def test_create_series(self):
+        series = RecurrenceSeries.objects.create(
+            title="Weekly review",
+            task_list=self.task_list,
+            recurrence_type="weekly",
+            interval=1,
+            day_of_week=0,
+            start_date=date.today(),
+            generation_horizon=date.today(),
+        )
+        self.assertEqual(series.recurrence_type, "weekly")
+        self.assertEqual(series.interval, 1)
+
+
+class TaskRecurrenceFieldsTest(TestCase):
+    def setUp(self):
+        self.task_list = TaskList.objects.create(
+            name="Work", colour="#4f46e5", position=0, column=0
+        )
+        self.series = RecurrenceSeries.objects.create(
+            title="Daily standup",
+            task_list=self.task_list,
+            recurrence_type="daily",
+            interval=1,
+            start_date=date.today(),
+            generation_horizon=date.today(),
+        )
+
+    def test_task_linked_to_series(self):
+        task = Task.objects.create(
+            title="Daily standup",
+            task_list=self.task_list,
+            series=self.series,
+            series_date=date.today(),
+            position=0,
+        )
+        self.assertEqual(task.series, self.series)
+        self.assertEqual(task.series_date, date.today())
+
+    def test_skipped_task_excluded_from_active(self):
+        Task.objects.create(
+            title="Skipped",
+            task_list=self.task_list,
+            series=self.series,
+            series_date=date.today(),
+            is_skipped=True,
+            position=0,
+        )
+        Task.objects.create(
+            title="Active",
+            task_list=self.task_list,
+            series=self.series,
+            series_date=date.today() + timedelta(days=1),
+            position=1,
+        )
+        active = Task.objects.active()
+        self.assertEqual(active.count(), 1)
+        self.assertEqual(active.first().title, "Active")
+
+    def test_series_cascade_on_delete(self):
+        task = Task.objects.create(
+            title="Instance",
+            task_list=self.task_list,
+            series=self.series,
+            series_date=date.today(),
+            position=0,
+        )
+        # SET_NULL: deleting series should null the FK, not delete the task
+        self.series.delete()
+        task.refresh_from_db()
+        self.assertIsNone(task.series)
 
 
 class TaskAttachmentModelTest(TestCase):

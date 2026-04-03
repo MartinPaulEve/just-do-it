@@ -1,6 +1,6 @@
 from django import forms
 
-from tasks.models import Task, TaskLink, TaskList
+from tasks.models import RecurrenceSeries, Task, TaskLink, TaskList
 
 
 class TaskListForm(forms.ModelForm):
@@ -50,6 +50,58 @@ class TaskForm(forms.ModelForm):
                 attrs={"type": "date", "class": "inline-form__input"}
             ),
             "deadline": forms.DateInput(
+                attrs={"type": "date", "class": "inline-form__input"}
+            ),
+        }
+
+
+class RecurrenceForm(forms.ModelForm):
+    class Meta:
+        model = RecurrenceSeries
+        fields = [
+            "recurrence_type",
+            "interval",
+            "day_of_week",
+            "day_of_month",
+            "end_date",
+        ]
+        widgets = {
+            "recurrence_type": forms.Select(attrs={"class": "inline-form__input"}),
+            "interval": forms.NumberInput(
+                attrs={
+                    "class": "inline-form__input",
+                    "min": 1,
+                    "value": 1,
+                    "style": "width: 60px;",
+                }
+            ),
+            "day_of_week": forms.Select(
+                choices=[(None, "---")]
+                + [
+                    (i, name)
+                    for i, name in enumerate(
+                        [
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                            "Sunday",
+                        ]
+                    )
+                ],
+                attrs={"class": "inline-form__input"},
+            ),
+            "day_of_month": forms.NumberInput(
+                attrs={
+                    "class": "inline-form__input",
+                    "min": 1,
+                    "max": 31,
+                    "style": "width: 60px;",
+                }
+            ),
+            "end_date": forms.DateInput(
                 attrs={"type": "date", "class": "inline-form__input"}
             ),
         }

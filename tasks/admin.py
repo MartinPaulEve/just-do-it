@@ -1,6 +1,19 @@
 from django.contrib import admin
 
-from tasks.models import Task, TaskAttachment, TaskLink, TaskList
+from tasks.models import RecurrenceSeries, Task, TaskAttachment, TaskLink, TaskList
+
+
+@admin.register(RecurrenceSeries)
+class RecurrenceSeriesAdmin(admin.ModelAdmin):
+    list_display = [
+        "title",
+        "task_list",
+        "recurrence_type",
+        "interval",
+        "start_date",
+        "end_date",
+    ]
+    list_filter = ["recurrence_type", "task_list"]
 
 
 class TaskInline(admin.TabularInline):

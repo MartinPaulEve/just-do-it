@@ -3,7 +3,7 @@ from datetime import date, timedelta
 
 from django.test import RequestFactory, TestCase
 
-from tasks.models import Task, TaskList
+from tasks.models import RecurrenceSeries, Task, TaskList
 from tasks.views.calendar import calendar_events, calendar_view
 
 
@@ -68,3 +68,61 @@ class CalendarEventsTest(TestCase):
         response = calendar_events(request)
         data = json.loads(response.content)
         self.assertEqual(data[0]["backgroundColor"], "#4f46e5")
+
+    def test_excludes_skipped_tasks(self):
+        series = RecurrenceSeries.objects.create(
+            title="Daily",
+            task_list=self.work,
+            recurrence_type="daily",
+            interval=1,
+            start_date=date.today(),
+            generation_horizon=date.today(),
+        )
+        Task.objects.create(
+            title="Skipped",
+            task_list=self.work,
+            position=0,
+            deadline=date.today(),
+            series=series,
+            series_date=date.today(),
+            is_skipped=True,
+        )
+        request = self.factory.get(
+            "/calendar/events/",
+            {
+                "start": str(date.today() - timedelta(days=1)),
+                "end": str(date.today() + timedelta(days=1)),
+            },
+        )
+        response = calendar_events(request)
+        data = json.loads(response.content)
+        self.assertEqual(len(data), 0)
+
+    def test_recurring_flag_in_extended_props(self):
+        series = RecurrenceSeries.objects.create(
+            title="Weekly",
+            task_list=self.work,
+            recurrence_type="weekly",
+            interval=1,
+            start_date=date.today(),
+            generation_horizon=date.today(),
+        )
+        Task.objects.create(
+            title="Recurring Task",
+            task_list=self.work,
+            position=0,
+            deadline=date.today(),
+            series=series,
+            series_date=date.today(),
+        )
+        request = self.factory.get(
+            "/calendar/events/",
+            {
+                "start": str(date.today() - timedelta(days=1)),
+                "end": str(date.today() + timedelta(days=1)),
+            },
+        )
+        response = calendar_events(request)
+        data = json.loads(response.content)
+        self.assertEqual(len(data), 1)
+        self.assertTrue(data[0]["extendedProps"]["recurring"])

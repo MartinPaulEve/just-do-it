@@ -12,6 +12,11 @@ from tasks.views import (
     link_create,
     link_delete,
     link_form,
+    recurrence_delete_apply,
+    recurrence_delete_scope,
+    recurrence_edit_apply,
+    recurrence_edit_scope,
+    recurrence_form_view,
     reorder_panels,
     reorder_tasks,
     subtask_create,
@@ -76,6 +81,32 @@ urlpatterns = [
     path("lists/create/", task_list_create, name="task_list_create"),
     path("lists/<int:list_id>/update/", task_list_update, name="task_list_update"),
     path("lists/<int:list_id>/delete/", task_list_delete, name="task_list_delete"),
+    # Recurrence
+    path(
+        "recurrence/form/<int:list_id>/",
+        recurrence_form_view,
+        name="recurrence_form",
+    ),
+    path(
+        "task/<int:task_id>/recurrence/edit-scope/",
+        recurrence_edit_scope,
+        name="recurrence_edit_scope",
+    ),
+    path(
+        "task/<int:task_id>/recurrence/edit-apply/",
+        recurrence_edit_apply,
+        name="recurrence_edit_apply",
+    ),
+    path(
+        "task/<int:task_id>/recurrence/delete-scope/",
+        recurrence_delete_scope,
+        name="recurrence_delete_scope",
+    ),
+    path(
+        "task/<int:task_id>/recurrence/delete-apply/",
+        recurrence_delete_apply,
+        name="recurrence_delete_apply",
+    ),
     # Additional views
     path("today/", today_view, name="today"),
     path("calendar/", calendar_view, name="calendar"),

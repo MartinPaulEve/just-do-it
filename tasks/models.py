@@ -25,10 +25,64 @@ class TaskList(models.Model):
         return self.tasks.filter(parent_task__isnull=True).active()
 
 
+class RecurrenceSeries(models.Model):
+    RECURRENCE_CHOICES = [
+        ("daily", "Daily"),
+        ("weekly", "Weekly"),
+        ("monthly", "Monthly"),
+        ("yearly", "Yearly"),
+    ]
+
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    task_list = models.ForeignKey(
+        "TaskList", on_delete=models.CASCADE, related_name="series"
+    )
+    recurrence_type = models.CharField(max_length=10, choices=RECURRENCE_CHOICES)
+    interval = models.PositiveSmallIntegerField(default=1)
+    day_of_week = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        help_text="0=Monday, 6=Sunday. Used for weekly recurrence.",
+    )
+    day_of_month = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        help_text="1-31. Used for monthly/yearly recurrence.",
+    )
+    month_of_year = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        help_text="1-12. Used for yearly recurrence.",
+    )
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    max_occurrences = models.PositiveIntegerField(null=True, blank=True)
+    deadline_offset = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text="Days after occurrence date to set as deadline.",
+    )
+    generation_horizon = models.DateField(
+        help_text="Instances have been generated up to this date.",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "recurrence series"
+
+    def __str__(self):
+        return (
+            f"{self.title} ({self.get_recurrence_type_display()} every {self.interval})"
+        )
+
+
 class TaskQuerySet(models.QuerySet):
     def active(self):
         return self.filter(
             completed=False,
+            is_skipped=False,
         ).exclude(
             start_date__gt=date.today(),
         )
@@ -63,6 +117,20 @@ class Task(models.Model):
         blank=True,
         related_name="follow_ups",
     )
+    series = models.ForeignKey(
+        RecurrenceSeries,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="instances",
+    )
+    series_date = models.DateField(
+        null=True,
+        blank=True,
+        help_text="The occurrence date for this instance within its series.",
+    )
+    is_skipped = models.BooleanField(default=False)
+    is_detached = models.BooleanField(default=False)
     position = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

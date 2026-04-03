@@ -99,6 +99,28 @@ document.body.addEventListener("htmx:afterSwap", function () {
     document.querySelectorAll(".dashboard__column").forEach(initPanelSortable);
 });
 
+// === Recurrence Form Conditional Fields ===
+
+function updateRecurrenceFields() {
+    var typeSelect = document.querySelector("[name='recurrence_type']");
+    if (!typeSelect) return;
+    var type = typeSelect.value;
+    var dowRow = document.getElementById("recurrence-day-of-week");
+    var domRow = document.getElementById("recurrence-day-of-month");
+    if (dowRow) dowRow.style.display = type === "weekly" ? "flex" : "none";
+    if (domRow) domRow.style.display = (type === "monthly" || type === "yearly") ? "flex" : "none";
+}
+
+document.body.addEventListener("change", function (event) {
+    if (event.target.name === "recurrence_type") {
+        updateRecurrenceFields();
+    }
+});
+
+document.body.addEventListener("htmx:afterSwap", function () {
+    updateRecurrenceFields();
+});
+
 // Initial setup
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".panel__tasks").forEach(initTaskSortable);

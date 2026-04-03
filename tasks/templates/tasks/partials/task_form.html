@@ -14,6 +14,12 @@
             {{ form.deadline }}
         </div>
     </div>
+    <div id="recurrence-container-{{ task_list.pk }}">
+    </div>
+    <button type="button" class="btn btn--ghost" style="align-self: flex-start;"
+            hx-get="{% url 'tasks:recurrence_form' task_list.pk %}"
+            hx-target="#recurrence-container-{{ task_list.pk }}"
+            hx-swap="innerHTML">+ Repeat</button>
     <div class="inline-form__actions">
         <button type="submit" class="btn btn--primary">Add Task</button>
         <button type="button" class="btn btn--ghost"

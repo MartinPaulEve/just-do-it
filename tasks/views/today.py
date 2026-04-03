@@ -1,9 +1,11 @@
 from django.shortcuts import render
 
 from tasks.models import Task, TaskList
+from tasks.recurrence import ensure_series_generated
 
 
 def today_view(request):
+    ensure_series_generated()
     task_lists = TaskList.objects.all()
     groups = []
     for tl in task_lists:
