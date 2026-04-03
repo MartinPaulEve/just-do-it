@@ -124,11 +124,18 @@
                     hx-get="{% url 'tasks:followup_form' task.pk %}"
                     hx-target="#followup-form-{{ task.pk }}"
                     hx-swap="innerHTML">Schedule follow-up</button>
+            {% if task.series %}
+            <button class="btn btn--danger"
+                    hx-get="{% url 'tasks:recurrence_delete_scope' task.pk %}"
+                    hx-target="body"
+                    hx-swap="beforeend">Delete</button>
+            {% else %}
             <button class="btn btn--danger"
                     hx-delete="{% url 'tasks:task_delete' task.pk %}"
                     hx-target="#task-card-{{ task.pk }}"
                     hx-swap="outerHTML"
                     hx-confirm="Delete this task?">Delete</button>
+            {% endif %}
             <button class="btn btn--ghost"
                     hx-get="{% url 'tasks:task_collapse' task.pk %}"
                     hx-target="#task-card-{{ task.pk }}"

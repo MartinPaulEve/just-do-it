@@ -4,7 +4,13 @@ from tasks.views.calendar import calendar_events, calendar_view
 from tasks.views.dashboard import dashboard_view, task_list_panel_partial
 from tasks.views.followup import followup_create, followup_form
 from tasks.views.links import link_create, link_delete, link_form
-from tasks.views.recurrence import recurrence_form_view
+from tasks.views.recurrence import (
+    recurrence_delete_apply,
+    recurrence_delete_scope,
+    recurrence_edit_apply,
+    recurrence_edit_scope,
+    recurrence_form_view,
+)
 from tasks.views.reorder import reorder_panels, reorder_tasks
 from tasks.views.subtask import subtask_create, subtask_form, subtask_toggle
 from tasks.views.task_crud import (
@@ -26,6 +32,10 @@ from tasks.views.today import today_view
 
 __all__ = [
     "all_tasks_view",
+    "recurrence_delete_apply",
+    "recurrence_delete_scope",
+    "recurrence_edit_apply",
+    "recurrence_edit_scope",
     "recurrence_form_view",
     "attachment_create",
     "attachment_delete",

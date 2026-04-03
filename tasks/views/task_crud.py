@@ -80,6 +80,16 @@ def task_expand(request, task_id):
 
 def task_update(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
+    # Recurring non-detached tasks: show scope modal
+    if task.series and not task.is_detached:
+        form_data = {
+            k: v for k, v in request.POST.items() if k != "csrfmiddlewaretoken"
+        }
+        return render(
+            request,
+            "tasks/partials/recurrence_scope_modal.html",
+            {"task": task, "action": "edit", "form_data": form_data},
+        )
     form = TaskForm(request.POST, instance=task)
     if form.is_valid():
         form.save()
@@ -119,5 +129,12 @@ def task_collapse(request, task_id):
 
 def task_delete(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
+    # Recurring tasks: show scope modal
+    if task.series:
+        return render(
+            request,
+            "tasks/partials/recurrence_scope_modal.html",
+            {"task": task, "action": "delete", "form_data": {}},
+        )
     task.delete()
     return HttpResponse("")
