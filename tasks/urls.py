@@ -12,6 +12,7 @@ from tasks.views import (
     link_create,
     link_delete,
     link_form,
+    recurrence_form_view,
     reorder_panels,
     reorder_tasks,
     subtask_create,
@@ -76,6 +77,12 @@ urlpatterns = [
     path("lists/create/", task_list_create, name="task_list_create"),
     path("lists/<int:list_id>/update/", task_list_update, name="task_list_update"),
     path("lists/<int:list_id>/delete/", task_list_delete, name="task_list_delete"),
+    # Recurrence
+    path(
+        "recurrence/form/<int:list_id>/",
+        recurrence_form_view,
+        name="recurrence_form",
+    ),
     # Additional views
     path("today/", today_view, name="today"),
     path("calendar/", calendar_view, name="calendar"),

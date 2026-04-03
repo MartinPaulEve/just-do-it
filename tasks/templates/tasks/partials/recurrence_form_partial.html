@@ -1,0 +1,23 @@
+<div class="inline-form" id="recurrence-config" style="background: #f5f3ff; margin-top: 8px;">
+    <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Repeat</div>
+    <div class="inline-form__row">
+        <label style="font-size: 11px; color: var(--text-muted);">Every</label>
+        {{ recurrence_form.interval }}
+        {{ recurrence_form.recurrence_type }}
+    </div>
+    <div class="inline-form__row" id="recurrence-day-of-week" style="display: none;">
+        <label style="font-size: 11px; color: var(--text-muted);">On</label>
+        {{ recurrence_form.day_of_week }}
+    </div>
+    <div class="inline-form__row" id="recurrence-day-of-month" style="display: none;">
+        <label style="font-size: 11px; color: var(--text-muted);">Day</label>
+        {{ recurrence_form.day_of_month }}
+    </div>
+    <div class="inline-form__row">
+        <label style="font-size: 11px; color: var(--text-muted);">Until</label>
+        {{ recurrence_form.end_date }}
+        <span style="font-size: 11px; color: var(--text-muted);">(optional)</span>
+    </div>
+    <button type="button" class="btn btn--ghost" style="align-self: flex-start;"
+            onclick="document.getElementById('recurrence-config').remove()">Remove repeat</button>
+</div>
