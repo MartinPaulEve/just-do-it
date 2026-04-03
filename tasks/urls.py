@@ -1,8 +1,11 @@
 from django.urls import path
 
 from tasks.views import (
+    all_tasks_view,
     attachment_create,
     attachment_delete,
+    calendar_events,
+    calendar_view,
     dashboard_view,
     followup_create,
     followup_form,
@@ -26,6 +29,7 @@ from tasks.views import (
     task_list_update,
     task_toggle,
     task_update,
+    today_view,
 )
 
 app_name = "tasks"
@@ -72,8 +76,9 @@ urlpatterns = [
     path("lists/create/", task_list_create, name="task_list_create"),
     path("lists/<int:list_id>/update/", task_list_update, name="task_list_update"),
     path("lists/<int:list_id>/delete/", task_list_delete, name="task_list_delete"),
-    # Stub routes for future tasks
-    path("today/", dashboard_view, name="today"),
-    path("calendar/", dashboard_view, name="calendar"),
-    path("all/", dashboard_view, name="all_tasks"),
+    # Additional views
+    path("today/", today_view, name="today"),
+    path("calendar/", calendar_view, name="calendar"),
+    path("calendar/events/", calendar_events, name="calendar_events"),
+    path("all/", all_tasks_view, name="all_tasks"),
 ]
