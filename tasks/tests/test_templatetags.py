@@ -2,6 +2,7 @@ from datetime import date, timedelta
 
 from django.test import TestCase
 
+from tasks.models import RecurrenceSeries
 from tasks.templatetags.task_tags import deadline_class, deadline_display
 
 
@@ -46,3 +47,30 @@ class DeadlineDisplayTest(TestCase):
         future = date.today() + timedelta(days=5)
         result = deadline_display(future)
         self.assertIn("Due", result)
+
+
+class RecurrenceDisplayTest(TestCase):
+    def test_daily(self):
+        series = RecurrenceSeries(recurrence_type="daily", interval=1)
+        from tasks.templatetags.task_tags import recurrence_display
+
+        self.assertEqual(recurrence_display(series), "Every day")
+
+    def test_weekly_with_day(self):
+        series = RecurrenceSeries(recurrence_type="weekly", interval=1, day_of_week=0)
+        from tasks.templatetags.task_tags import recurrence_display
+
+        self.assertEqual(recurrence_display(series), "Every week on Monday")
+
+    def test_monthly_interval(self):
+        series = RecurrenceSeries(
+            recurrence_type="monthly", interval=2, day_of_month=15
+        )
+        from tasks.templatetags.task_tags import recurrence_display
+
+        self.assertEqual(recurrence_display(series), "Every 2 months on day 15")
+
+    def test_none_returns_empty(self):
+        from tasks.templatetags.task_tags import recurrence_display
+
+        self.assertEqual(recurrence_display(None), "")

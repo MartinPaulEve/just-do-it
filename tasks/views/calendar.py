@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from tasks.models import Task
+from tasks.recurrence import ensure_series_generated
 
 
 def calendar_view(request):
@@ -15,10 +16,12 @@ def calendar_view(request):
 def calendar_events(request):
     start = request.GET.get("start")
     end = request.GET.get("end")
+    ensure_series_generated()
     tasks = Task.objects.filter(
         deadline__isnull=False,
         parent_task__isnull=True,
-    ).select_related("task_list")
+        is_skipped=False,
+    ).select_related("task_list", "series")
     if start:
         tasks = tasks.filter(deadline__gte=start)
     if end:
@@ -36,6 +39,7 @@ def calendar_events(request):
                 "taskId": task.pk,
                 "completed": task.completed,
                 "listName": task.task_list.name,
+                "recurring": task.series_id is not None,
             },
         }
         if task.completed:

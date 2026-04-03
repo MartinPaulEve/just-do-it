@@ -29,6 +29,9 @@
                 {% if task.follow_up_from %}
                     <span class="task-card__followup">&#x21AA; follow-up</span>
                 {% endif %}
+                {% if task.series %}
+                    <span class="task-card__indicator" style="color: #8b5cf6;">&#8635; repeats</span>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -3,9 +3,11 @@ from collections import defaultdict
 from django.shortcuts import get_object_or_404, render
 
 from tasks.models import Task, TaskList
+from tasks.recurrence import ensure_series_generated
 
 
 def dashboard_view(request):
+    ensure_series_generated()
     task_lists = TaskList.objects.all()
     columns = defaultdict(list)
     for tl in task_lists:

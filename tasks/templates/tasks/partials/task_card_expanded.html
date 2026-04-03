@@ -59,6 +59,18 @@
         </div>
         {% endif %}
 
+        {% if task.series %}
+        <div class="task-expanded__section">
+            <div class="task-expanded__section-title">Repeats</div>
+            <div style="font-size: 12px; color: var(--text-secondary); padding: 6px 8px; background: #f5f3ff; border-radius: 6px;">
+                {{ task.series|recurrence_display }}
+                {% if task.series.end_date %}
+                    <span style="color: var(--text-muted);"> &middot; until {{ task.series.end_date|date:"M j, Y" }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
         <div class="task-expanded__section">
             <div class="task-expanded__section-title">Sub-tasks</div>
             <div id="subtasks-{{ task.pk }}">
