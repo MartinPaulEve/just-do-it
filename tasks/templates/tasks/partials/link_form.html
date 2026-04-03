@@ -1,0 +1,13 @@
+<form class="inline-form"
+      hx-post="{% url 'tasks:link_create' task.pk %}"
+      hx-target="#links-{{ task.pk }}"
+      hx-swap="beforeend">
+    {% csrf_token %}
+    {{ form.url }}
+    {{ form.label }}
+    <div class="inline-form__actions">
+        <button type="submit" class="btn btn--primary">Add Link</button>
+        <button type="button" class="btn btn--ghost"
+                onclick="this.closest('form').remove()">Cancel</button>
+    </div>
+</form>

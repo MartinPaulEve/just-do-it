@@ -1,0 +1,11 @@
+<div class="link-item" id="link-{{ link.pk }}">
+    <span>&#128279;</span>
+    <a href="{{ link.url }}" class="link-item__link" target="_blank" rel="noopener">
+        {{ link.label|default:link.url }}
+    </a>
+    <button class="link-item__delete"
+            hx-delete="{% url 'tasks:link_delete' link.pk %}"
+            hx-target="#link-{{ link.pk }}"
+            hx-swap="outerHTML"
+            hx-confirm="Remove this link?">&times;</button>
+</div>
