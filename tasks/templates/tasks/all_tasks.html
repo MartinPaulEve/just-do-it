@@ -1,0 +1,45 @@
+{% extends "tasks/base.html" %}
+{% load task_tags %}
+
+{% block title %}All Tasks — Todo{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<h2 style="margin-bottom: 20px; font-size: 22px; font-weight: 700;">All Tasks</h2>
+
+<form class="filters"
+      hx-get="{% url 'tasks:all_tasks' %}"
+      hx-trigger="change"
+      hx-target="closest .main"
+      hx-swap="innerHTML"
+      hx-select=".main > *">
+    <select name="list">
+        <option value="">All Lists</option>
+        {% for tl in task_lists %}
+        <option value="{{ tl.pk }}" {% if current_list == tl.pk|stringformat:"d" %}selected{% endif %}>
+            {{ tl.name }}
+        </option>
+        {% endfor %}
+    </select>
+    <select name="status">
+        <option value="" {% if not current_status %}selected{% endif %}>All Statuses</option>
+        <option value="active" {% if current_status == "active" %}selected{% endif %}>Active</option>
+        <option value="completed" {% if current_status == "completed" %}selected{% endif %}>Completed</option>
+    </select>
+</form>
+
+<div style="display: flex; flex-direction: column; gap: 8px;"
+     hx-get="{% url 'tasks:all_tasks' %}"
+     hx-trigger="every 10s"
+     hx-target="closest .main"
+     hx-swap="innerHTML"
+     hx-select=".main > *">
+    {% for task in tasks %}
+        {% include "tasks/partials/task_card.html" %}
+    {% empty %}
+        <div style="text-align: center; color: var(--text-muted); padding: 60px 0;">
+            <p style="font-size: 16px;">No tasks found</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
