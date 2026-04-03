@@ -1,3 +1,15 @@
+## 1.3.0 (2026-04-03)
+
+### Feat
+
+- **deploy**: add ECR build+push workflow and Dockerfile prod improvements
+- **deploy**: add production docker-compose with Postgres and Valkey
+- **deploy**: add WhiteNoise and update production settings for Pangolin
+
+### Fix
+
+- **deploy**: switch to ECR Public for unauthenticated pulls
+
 ## 1.2.0 (2026-04-03)
 
 ### Feat
