@@ -1,3 +1,15 @@
+## 1.2.0 (2026-04-03)
+
+### Feat
+
+- **ui**: add conditional field visibility for recurrence form
+- **recurrence**: add edit and delete with scope for recurring tasks
+- **display**: add repeat indicators, series info, and ensure_series_generated
+- **recurrence**: add recurrence form and recurring task creation flow
+- **commands**: add generate_recurring_tasks management command
+- **recurrence**: add recurrence calculation and instance generation
+- **models**: add RecurrenceSeries model and Task recurrence fields
+
 ## 1.1.0 (2026-04-03)
 
 ### Feat

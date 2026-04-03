@@ -1,6 +1,6 @@
 [project]
 name = "todo"
-version = "1.1.0"
+version = "1.2.0"
 description = "Todo application"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -25,7 +25,7 @@ dev = [
 ]
 
 [tool.commitizen]
-version = "1.1.0"
+version = "1.2.0"
 version_files = [
     "__version__.py",
     "pyproject.toml:version"
