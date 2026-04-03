@@ -4,6 +4,7 @@
 .idea/
 .vscode/
 .claude/
+.superpowers/
 .env
 .ruff_cache/
 .pre-commit-config.yaml
@@ -11,6 +12,7 @@ docs/
 traefik/certs/
 db.sqlite3
 staticfiles/
+media/
 *.md
 __pycache__/
 *.py[cod]
