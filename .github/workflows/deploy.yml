@@ -1,4 +1,4 @@
-name: Build and Push to ECR
+name: Build and Push to ECR Public
 
 on:
   push:
@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 env:
-  ECR_REGISTRY: 747101050174.dkr.ecr.us-east-1.amazonaws.com
-  ECR_REPOSITORY: eve.gd/todo
+  ECR_REGISTRY: public.ecr.aws/x3x8a1a3
+  ECR_REPOSITORY: eve.gd/just-do-it
   AWS_REGION: us-east-1
 
 jobs:
@@ -27,9 +27,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Log in to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+      - name: Log in to Amazon ECR Public
+        run: |
+          aws ecr-public get-login-password --region us-east-1 \
+            | docker login --username AWS --password-stdin public.ecr.aws
 
       - name: Build and push Docker image
         env:

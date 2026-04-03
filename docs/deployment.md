@@ -1,6 +1,6 @@
 # Deployment Guide
 
-JDI runs as a Docker stack behind a Pangolin reverse proxy. Docker images are built by GitHub Actions on merge to main and pushed to a private AWS ECR repository. Updating the production server is a matter of `docker compose pull`.
+JDI runs as a Docker stack behind a Pangolin reverse proxy. Docker images are built by GitHub Actions on merge to main and pushed to a public AWS ECR repository. Updating the production server is a matter of `docker compose pull`.
 
 ## Architecture
 
@@ -55,16 +55,35 @@ Save this as `trust.json`:
 }
 ```
 
-Then create the role and attach the ECR push policy:
+Then create the role and attach policies for ECR Public push:
 
 ```bash
 aws iam create-role \
   --role-name jdi-github-ecr-push \
   --assume-role-policy-document file://trust.json
 
-aws iam attach-role-policy \
+# ECR Public requires these permissions
+aws iam put-role-policy \
   --role-name jdi-github-ecr-push \
-  --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+  --policy-name ecr-public-push \
+  --policy-document '{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "ecr-public:GetAuthorizationToken",
+          "ecr-public:BatchCheckLayerAvailability",
+          "ecr-public:InitiateLayerUpload",
+          "ecr-public:UploadLayerPart",
+          "ecr-public:CompleteLayerUpload",
+          "ecr-public:PutImage",
+          "sts:GetServiceBearerToken"
+        ],
+        "Resource": "*"
+      }
+    ]
+  }'
 ```
 
 ### 3. Add GitHub Secret
@@ -98,24 +117,16 @@ Generate a secret key:
 python3 -c "import secrets; print(secrets.token_urlsafe(50))"
 ```
 
-### 2. Log In to ECR
+### 2. Pull and Start
 
-```bash
-aws ecr get-login-password --region us-east-1 \
-  | docker login --username AWS --password-stdin \
-    747101050174.dkr.ecr.us-east-1.amazonaws.com
-```
-
-Note: ECR login tokens expire after 12 hours. For unattended pulls, set up a cron job to refresh the token or use the [ECR credential helper](https://github.com/awslabs/amazon-ecr-credential-helper).
-
-### 3. Pull and Start
+The image is on ECR Public — no login required to pull.
 
 ```bash
 docker compose -f docker-compose.prod.yml pull
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-### 4. Configure Pangolin
+### 3. Configure Pangolin
 
 Point Pangolin to `127.0.0.1:8000` (HTTP, not HTTPS — Pangolin handles SSL).
 

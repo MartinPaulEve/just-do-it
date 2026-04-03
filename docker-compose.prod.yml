@@ -1,6 +1,6 @@
 services:
   django:
-    image: 747101050174.dkr.ecr.us-east-1.amazonaws.com/eve.gd/todo:latest
+    image: public.ecr.aws/x3x8a1a3/eve.gd/just-do-it:latest
     ports:
       - "127.0.0.1:${DJANGO_PORT:-8000}:8000"
     env_file:
