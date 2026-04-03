@@ -1,0 +1,11 @@
+<form class="inline-form" style="flex-direction: row; padding: 6px;"
+      hx-post="{% url 'tasks:subtask_create' parent.pk %}"
+      hx-target="#subtasks-{{ parent.pk }}"
+      hx-swap="beforeend">
+    {% csrf_token %}
+    <input type="text" name="title" class="inline-form__input"
+           placeholder="Sub-task title" autofocus style="flex: 1;">
+    <button type="submit" class="btn btn--primary">Add</button>
+    <button type="button" class="btn btn--ghost"
+            onclick="this.closest('form').remove()">Cancel</button>
+</form>
