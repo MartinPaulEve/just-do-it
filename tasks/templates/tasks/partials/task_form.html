@@ -1,0 +1,22 @@
+<form class="inline-form"
+      hx-post="{% url 'tasks:task_create' task_list.pk %}"
+      hx-target="closest .panel"
+      hx-swap="outerHTML">
+    {% csrf_token %}
+    {{ form.title }}
+    <div class="inline-form__row">
+        <div>
+            <label style="font-size: 11px; color: var(--text-muted);">Start</label>
+            {{ form.start_date }}
+        </div>
+        <div>
+            <label style="font-size: 11px; color: var(--text-muted);">Deadline</label>
+            {{ form.deadline }}
+        </div>
+    </div>
+    <div class="inline-form__actions">
+        <button type="submit" class="btn btn--primary">Add Task</button>
+        <button type="button" class="btn btn--ghost"
+                onclick="this.closest('.inline-form').remove()">Cancel</button>
+    </div>
+</form>
