@@ -1,0 +1,23 @@
+<form class="inline-form"
+      hx-post="{% url 'tasks:followup_create' task.pk %}"
+      hx-target="closest div"
+      hx-swap="innerHTML">
+    {% csrf_token %}
+    <input type="text" name="title" class="inline-form__input"
+           value="{{ default_title }}" autofocus>
+    <div class="inline-form__row">
+        <div>
+            <label style="font-size: 11px; color: var(--text-muted);">Appears on</label>
+            <input type="date" name="start_date" class="inline-form__input">
+        </div>
+        <div>
+            <label style="font-size: 11px; color: var(--text-muted);">Deadline</label>
+            <input type="date" name="deadline" class="inline-form__input">
+        </div>
+    </div>
+    <div class="inline-form__actions">
+        <button type="submit" class="btn btn--primary">Schedule</button>
+        <button type="button" class="btn btn--ghost"
+                onclick="this.closest('form').remove()">Cancel</button>
+    </div>
+</form>
