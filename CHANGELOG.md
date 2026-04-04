@@ -1,3 +1,9 @@
+## 1.4.0 (2026-04-04)
+
+### Feat
+
+- **tasks**: add Google Tasks import command and fix calendar UI
+
 ## 1.3.0 (2026-04-03)
 
 ### Feat
