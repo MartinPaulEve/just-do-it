@@ -33,6 +33,12 @@ document.addEventListener("DOMContentLoaded", function() {
             center: "title",
             right: "dayGridMonth,timeGridWeek,listWeek"
         },
+        buttonText: {
+            today: "Today",
+            month: "Month",
+            week: "Week",
+            list: "List"
+        },
         events: {
             url: "{% url 'tasks:calendar_events' %}",
             failure: function() {

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "gtasks": {
+      "command": "/home/martin/.bun/bin/bun",
+      "args": [
+        "run",
+        "/home/martin/Documents/Programming/gtasks-mcp/dist/index.js"
+      ]
+    }
+  }
+}
