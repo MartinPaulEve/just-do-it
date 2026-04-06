@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
-    "tasks",
 ]
 
 MIDDLEWARE = [
@@ -57,9 +56,9 @@ WSGI_APPLICATION = "todo.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB", "todo"),
-        "USER": os.environ.get("POSTGRES_USER", "todo"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "todo"),
+        "NAME": os.environ.get("POSTGRES_DB", "myproject"),
+        "USER": os.environ.get("POSTGRES_USER", "myproject"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "myproject"),
         "HOST": os.environ.get("POSTGRES_HOST", "172.27.0.2"),
         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }

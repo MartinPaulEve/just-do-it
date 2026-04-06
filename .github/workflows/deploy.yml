@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 env:
-  ECR_REGISTRY: public.ecr.aws/x3x8a1a3
-  ECR_REPOSITORY: eve.gd/just-do-it
+  ECR_REGISTRY: public.ecr.aws/YOUR_ALIAS
+  ECR_REPOSITORY: your-org/your-project
   AWS_REGION: us-east-1
 
 jobs:

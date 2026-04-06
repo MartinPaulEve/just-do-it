@@ -1,7 +1,7 @@
 [project]
-name = "todo"
-version = "1.4.0"
-description = "Todo application"
+name = "myproject"
+version = "0.0.1"
+description = "Django project template"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -11,7 +11,6 @@ dependencies = [
     "daphne>=4.0",
     "psycopg[binary]>=3.1",
     "django-htmx>=1.21",
-    "python-dateutil>=2.9",
     "whitenoise>=6.7",
 ]
 
@@ -23,10 +22,12 @@ dev = [
     "werkzeug>=3.0",
     "pyopenssl>=24.0",
     "django-debug-toolbar>=5.0",
+    "pytest>=8.0",
+    "pytest-django>=4.8",
 ]
 
 [tool.commitizen]
-version = "1.4.0"
+version = "0.0.1"
 version_files = [
     "__version__.py",
     "pyproject.toml:version"
@@ -49,3 +50,7 @@ select = [
 
 [tool.ruff.lint.isort]
 known-first-party = ["todo", "config"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["tests.py", "test_*.py"]

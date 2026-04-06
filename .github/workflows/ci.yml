@@ -35,9 +35,9 @@ jobs:
       postgres:
         image: postgres:17
         env:
-          POSTGRES_DB: todo_test
-          POSTGRES_USER: todo
-          POSTGRES_PASSWORD: todo
+          POSTGRES_DB: myproject_test
+          POSTGRES_USER: myproject
+          POSTGRES_PASSWORD: myproject
         ports:
           - 5432:5432
         options: >-
@@ -61,10 +61,10 @@ jobs:
       - name: Run tests
         env:
           SECRET_KEY: test-secret-key-for-ci
-          POSTGRES_DB: todo_test
-          POSTGRES_USER: todo
-          POSTGRES_PASSWORD: todo
+          POSTGRES_DB: myproject_test
+          POSTGRES_USER: myproject
+          POSTGRES_PASSWORD: myproject
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
-          DJANGO_ENV: local
-        run: uv run python manage.py test
+          DJANGO_ENV: test
+        run: uv run pytest
